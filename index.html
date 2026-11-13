@@ -309,15 +309,15 @@ body.booking .zoom{display:none}
 #bkBar button{border:0;background:none;color:var(--accent);font-size:12px;padding:2px 4px}
 
 /* penanda referensi */
-body.show-refs .dc .b[data-ref]::before{content:"";position:absolute;left:-19px;top:.42em;width:7px;height:7px;border-radius:50%;box-sizing:content-box;pointer-events:none}
-body.show-refs .dc .b[data-ref="1"]::before{background:#1a7f4b}
-body.show-refs .dc .b[data-ref="0"]::before{border:1.5px solid #d08a0e;width:5px;height:5px;background:transparent}
+body.editing.show-refs .dc .b[data-ref]::before{content:"";position:absolute;left:-19px;top:.42em;width:7px;height:7px;border-radius:50%;box-sizing:content-box;pointer-events:none}
+body.editing.show-refs .dc .b[data-ref="1"]::before{background:#1a7f4b}
+body.editing.show-refs .dc .b[data-ref="0"]::before{border:1.5px solid #d08a0e;width:5px;height:5px;background:transparent}
 #refLegend{font:600 11px/1 system-ui,sans-serif;color:var(--ui);display:none;align-items:center;gap:5px;white-space:nowrap;margin-left:2px}
-body.show-refs #refLegend{display:inline-flex}
+body.editing.show-refs #refLegend{display:inline-flex}
 #refLegend .rd{display:inline-block;width:7px;height:7px;border-radius:50%;box-sizing:content-box}
 #refLegend .rd.on{background:#1a7f4b}
 #refLegend .rd.off{border:1.5px solid #d08a0e;width:5px;height:5px}
-@media print{body.show-refs .dc .b[data-ref]::before{display:none!important}}
+@media print{body.editing.show-refs .dc .b[data-ref]::before{display:none!important}}
 </style>
 </head>
 <body class="ui-body show-refs">
