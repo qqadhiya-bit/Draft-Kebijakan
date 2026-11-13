@@ -328,7 +328,7 @@ body.show-refs #refLegend{display:inline-flex}
     <div class="sep"></div>
     <button class="tbtn" id="bFind" title="Cari teks (Ctrl+Shift+F)" aria-label="Cari teks"><svg viewBox="0 0 24 24"><path d="M11 5a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM20 20l-4.2-4.2"></path></svg></button>
     <button class="tbtn" id="bFlagList" title="Daftar baris bertanda merah" aria-label="Daftar tanda merah"><svg viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"></path></svg><span id="flagBadge" style="">12</span></button>
-    <button class="tbtn on" id="bRefMark" title="Penanda referensi: titik hijau = sudah ada referensi, cincin oranye = belum ada" aria-label="Penanda referensi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="currentColor"></circle><circle cx="12" cy="12" r="9"></circle></svg></button><span id="refLegend"><i class="rd on"></i>581 ada <i class="rd off"></i>402 belum</span>
+    <button class="tbtn on" id="bRefMark" title="Penanda referensi: titik hijau = sudah ada referensi, cincin oranye = belum ada" aria-label="Penanda referensi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="currentColor"></circle><circle cx="12" cy="12" r="9"></circle></svg></button><span id="refLegend"><i class="rd on"></i><i class="rd off"></i></span>
     <button class="tbtn" id="bTocMan" title="Daftar isi" aria-label="Daftar isi"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg></button>
     <div class="sep"></div>
     <button class="tbtn" id="bSave" title="Simpan file HTML dengan semua perubahan" aria-label="Simpan"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"></path></svg></button>
@@ -1239,7 +1239,7 @@ function refreshMarks(){
   var fcount=$$('.b[data-flag]',doc).length,fbd=$('#flagBadge');if(fbd){fbd.textContent=fcount;fbd.style.display=fcount?'':'none';}
   $$('.b[data-flag]',doc).forEach(function(el){var f=document.createElement('span');f.className='fmark';f.contentEditable='false';f.title='Masih bermasalah. Klik untuk hapus tanda.';el.appendChild(f);});
 }
-function markRefs(){var a=0,b=0;$$('.b-p,.b-li,.b-table',doc).forEach(function(el){var id=el.getAttribute('data-note'),n=id&&NOTES[id];var ok=!!(n&&n.groups.some(function(g){return g.label==='Referensi'&&g.ps.some(function(p){return p.h.replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').trim();});}));el.setAttribute('data-ref',ok?'1':'0');if(ok)a++;else b++;});var lg=$('#refLegend');if(lg)lg.innerHTML='<i class="rd on"></i>'+a+' ada <i class="rd off"></i>'+b+' belum';}
+function markRefs(){var a=0,b=0;$$('.b-p,.b-li,.b-table',doc).forEach(function(el){var id=el.getAttribute('data-note'),n=id&&NOTES[id];var ok=!!(n&&n.groups.some(function(g){return g.label==='Referensi'&&g.ps.some(function(p){return p.h.replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').trim();});}));el.setAttribute('data-ref',ok?'1':'0');if(ok)a++;else b++;});var lg=$('#refLegend');if(lg)lg.innerHTML='<i class="rd on" title="Sudah ada referensi ('+a+')"></i><i class="rd off" title="Belum ada referensi ('+b+')"></i>';}
 (function(){var bt=$('#bRefMark'),pb=$('#pBody'),rt;if(bt)bt.addEventListener('click',function(){var on=body.classList.toggle('show-refs');bt.classList.toggle('on',on);});if(pb)pb.addEventListener('input',function(){clearTimeout(rt);rt=setTimeout(function(){readPanel();markRefs();},350);});})();
 function refresh(){renumber();refreshMarks();markRefs();markActive();if(typeof renderScrollToc==='function')renderScrollToc();}
 function findFmt(depth,blk){
