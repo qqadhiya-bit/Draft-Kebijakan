@@ -124,7 +124,12 @@ body.editing .pclose{top:calc(var(--tb-h) + var(--fmt-h) + 10px)}
 .ng h4::after{content:"";flex:1;height:1px;background:var(--line-soft)}
 .ng .np{font-size:12.5px;line-height:1.55;margin:0 0 8px;outline:none;border-radius:4px;color:var(--ui)}
 .ng .np.src{font-weight:600;margin-bottom:2px}
-.ng .np.src + .np.src{font-weight:500;color:var(--accent)}
+.ng .np.src2{font-weight:500;color:var(--accent)}
+.ng .nw{position:relative}
+.ng .nw .pdel{position:absolute;top:2px;right:-4px;width:20px;height:20px;border:0;border-radius:50%;background:#fff;color:#9aa4ad;font-size:15px;line-height:18px;padding:0;cursor:pointer;opacity:0;transition:opacity .12s}
+.ng .nw:hover .pdel,.ng .nw:focus-within .pdel{opacity:1}
+.ng .nw .pdel:hover{background:#fdecec;color:#d32f2f}
+@media (hover:none){.ng .nw .pdel{opacity:.7}}
 .ng .np.q{border-left:3px solid var(--accent-line);padding:2px 0 2px 12px;margin:8px 0 14px;color:#2b3640;font-style:italic;background:#fbfdfd}
 .ng .np.empty{color:#9aa4ad;font-style:italic}
 .ng .np{padding:3px 6px;margin-left:-6px;margin-right:-6px;border-radius:4px}
@@ -1559,7 +1564,8 @@ function renderPanel(){
     if(pShow[g.label]===false)return;
     h+='<section class="ng" data-g="'+gi+'"><h4>'+g.label+'<button class="gdel" data-gdel="'+gi+'" title="Hapus bagian ini">Hapus</button></h4>';
     g.ps.forEach(function(p,pi){
-      h+='<div class="np '+p.k+'" data-p="'+pi+'" contenteditable="true">'+p.h+'</div>';
+      var prev=g.ps[pi-1],cls=p.k+((p.k==='src'&&prev&&prev.k==='src')?' src2':'');
+      h+='<div class="nw"><div class="np '+cls+'" data-p="'+pi+'" contenteditable="true">'+p.h+'</div><button class="pdel" data-pdel="'+gi+'" data-pi="'+pi+'" title="Hapus baris ini" aria-label="Hapus baris ini" tabindex="-1">\u00d7</button></div>';
     });
     h+='<div class="gadd">'+(g.label==='Referensi'
       ?'<button data-padd="'+gi+'" data-k="src">+ sumber</button><button data-padd="'+gi+'" data-k="q">+ kutipan</button>'
@@ -1632,6 +1638,8 @@ $('#pBody').addEventListener('click',function(e){
   readPanel();var n=NOTES[activeId],sec=b.closest('.ng'),focusG=null;
   if(b.dataset.gdel!==undefined){
     n.groups.splice(+b.dataset.gdel,1);
+  }else if(b.dataset.pdel!==undefined){
+    var dg=n.groups[+b.dataset.pdel];if(dg)dg.ps.splice(+b.dataset.pi,1);
   }else if(b.dataset.padd!==undefined){
     var gi=+b.dataset.padd;n.groups[gi].ps.push({k:b.dataset.k,h:''});focusG=gi;
   }else return;
