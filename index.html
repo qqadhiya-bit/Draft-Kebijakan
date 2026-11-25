@@ -318,6 +318,7 @@ body.clean-view #doc strike,body.clean-view #doc s,body.clean-view #doc del,body
 body.clean-view #doc [style*="rgb(255, 0, 0)"],body.clean-view #doc [style*="#ff0000"],body.clean-view #doc [style*="#f00"],body.clean-view #book [style*="rgb(255, 0, 0)"],body.clean-view #book [style*="#ff0000"]{background:none!important;background-color:transparent!important}
 #bClean .eo{display:none}#bClean.on .eo{display:inline}#bClean.on .ec{display:none}
 @media print{body.clean-view strike,body.clean-view s{display:none!important}}
+.cv-gone{display:none!important}
 </style>
 </head>
 <body class="ui-body show-refs">
@@ -1217,6 +1218,7 @@ function fmtNum(n,f){
 function renumber(){
   var cnt=[0,0,0,0,0,0,0],h2=0,top=false;
   Array.prototype.forEach.call(doc.children,function(el){
+    if(el.classList.contains('cv-gone'))return;
     if(el.classList.contains('b-p')||el.classList.contains('b-li')){if(top)el.setAttribute('data-top','1');else el.removeAttribute('data-top');}
     if(el.classList.contains('b-h1')){cnt=[0,0,0,0,0,0,0];h2=0;top=true;}
     else if(el.classList.contains('b-h2')){top=false;h2++;cnt=[0,0,0,0,0,0,0];var l=el.querySelector('.lbl');if(l)l.textContent=fmtNum(h2,'upperLetter')+'.';}
@@ -1226,6 +1228,7 @@ function renumber(){
     }
   });
 }
+window.__renumber=renumber;
 function refreshMarks(){
   $$('.nmark,.fmark',doc).forEach(function(n){n.remove()});
   var last={};
@@ -2238,5 +2241,12 @@ window.__pbj={bk:bk,renumber:renumber,doc:doc,NOTES:function(){return NOTES}};
 </script>
 
 
-<script>(function(){var b=document.getElementById('bClean');if(!b)return;b.addEventListener('click',function(){var on=document.body.classList.toggle('clean-view');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});})();</script>
+<script>(function(){var b=document.getElementById('bClean');if(!b)return;
+function apply(on){var doc=document.getElementById('doc');
+ Array.prototype.forEach.call(doc.querySelectorAll('.b-p,.b-li'),function(el){el.classList.remove('cv-gone');if(!on)return;
+  var t=el.querySelector(':scope > .tx');if(!t)return;var full=t.textContent.replace(/\u00a0/g,' ').trim();if(!full)return;
+  var c=t.cloneNode(true);Array.prototype.forEach.call(c.querySelectorAll('strike,s,del'),function(e){e.remove();});
+  if(!c.textContent.replace(/\u00a0/g,' ').trim())el.classList.add('cv-gone');});
+ if(window.__renumber)window.__renumber();}
+b.addEventListener('click',function(){var on=document.body.classList.toggle('clean-view');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);apply(on);});})();</script>
 </body></html>
