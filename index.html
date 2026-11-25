@@ -313,6 +313,11 @@ body.show-refs #refLegend{display:inline-flex}
 #refLegend .rd.on{background:#1a7f4b}
 #refLegend .rd.off{border:1.5px solid #d08a0e;width:5px;height:5px}
 @media print{body.show-refs .dc .b[data-ref]::before{display:none!important}}
+
+body.clean-view #doc strike,body.clean-view #doc s,body.clean-view #doc del,body.clean-view #book strike,body.clean-view #book s{display:none!important}
+body.clean-view #doc [style*="rgb(255, 0, 0)"],body.clean-view #doc [style*="#ff0000"],body.clean-view #doc [style*="#f00"],body.clean-view #book [style*="rgb(255, 0, 0)"],body.clean-view #book [style*="#ff0000"]{background:none!important;background-color:transparent!important}
+#bClean .eo{display:none}#bClean.on .eo{display:inline}#bClean.on .ec{display:none}
+@media print{body.clean-view strike,body.clean-view s{display:none!important}}
 </style>
 </head>
 <body class="ui-body show-refs">
@@ -328,6 +333,7 @@ body.show-refs #refLegend{display:inline-flex}
     <div class="sep"></div>
     <button class="tbtn" id="bFind" title="Cari teks (Ctrl+Shift+F)" aria-label="Cari teks"><svg viewBox="0 0 24 24"><path d="M11 5a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM20 20l-4.2-4.2"></path></svg></button>
     <button class="tbtn" id="bFlagList" title="Daftar baris bertanda merah" aria-label="Daftar tanda merah"><svg viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"></path></svg><span id="flagBadge" style="">14</span></button>
+    <button class="tbtn" id="bClean" title="Tampilan bersih: sembunyikan teks yang dicoret dan hilangkan stabilo merah" aria-label="Tampilan bersih"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle><path class="ec" d="M3 3l18 18"></path></svg></button>
     <button class="tbtn on" id="bRefMark" title="Penanda referensi: titik hijau = sudah ada referensi, cincin oranye = belum ada" aria-label="Penanda referensi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5" fill="currentColor"></circle><circle cx="12" cy="12" r="9"></circle></svg></button><span id="refLegend"><i class="rd on"></i>340 ada <i class="rd off"></i>683 belum</span>
     <button class="tbtn" id="bTocMan" title="Daftar isi" aria-label="Daftar isi"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg></button>
     <div class="sep"></div>
@@ -2232,4 +2238,5 @@ window.__pbj={bk:bk,renumber:renumber,doc:doc,NOTES:function(){return NOTES}};
 </script>
 
 
+<script>(function(){var b=document.getElementById('bClean');if(!b)return;b.addEventListener('click',function(){var on=document.body.classList.toggle('clean-view');b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);});})();</script>
 </body></html>
